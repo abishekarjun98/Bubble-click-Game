@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+      
+    <style>
+        
+        canvas { 
+        background: #eee;
+       
+     
+        }
+    </style>
+
+   
+</head>
+<body>
+
+<canvas id="canvas" width="1000" height=1000></canvas>
+
+<script>
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+var totalbubbles=3;
+
+arr=[];
+    arr=["blue","red","yellow","green","brown","orange"];
+
+var circles = [];
+
+
+ctx.globalAlpha = 1;
+
+for(var i=1;i<=totalbubbles;i++)
+{
+  var r = Math.floor(Math.random() * (6) ) ;
+	var r1 = Math.floor(Math.random() * (15-2) ) + 2;
+  var r2 = Math.floor(Math.random() * (15-2) ) + 2;
+  var r3 = Math.floor(Math.random() * (15-2) ) + 2;
+let x1=r1*50;
+let y1=r2*50;
+let r4=r3*5;
+let col=arr[r];
+	circles.push({id:i,x:x1 ,y:y1 ,radius:r4,color:col});
+
+}
+
+circles.forEach(circle => {
+  ctx.beginPath();
+  ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
+  ctx.fillStyle = circle.color;
+  ctx.fill();
+});
+
+
+function isIntersect(x1,y1)
+{
+
+
+for(var i=0; i<circles.length ;i++)
+{
+
+  var xa=circles[i].x - x1;
+  var ya=circles[i].y - y1;
+  var d= xa*xa + ya*ya;
+  var dist=Math.sqrt(d);
+
+      if(dist < circles[i].radius)
+  {
+    
+    console.log("clicked on bubble");
+    
+    /*ctx.beginPath()
+    ctx.arc(circles[i].x,circles[i].y,circles[i].radius,0,Math.PI*2,true);
+    ctx.fillStyle="grey";
+   ctx.fill();*/
+   circles.splice(i,1);
+  //console.log(circles.length); 
+  }
+
+//console.log(circles.length); 
+}
+}
+
+
+
+function move()
+{
+
+for (var i = 0; i <circles.length; i++) {
+//var dy=10;
+
+var dx= Math.floor(Math.random() * (100-2) ) + 2;
+  var dy= Math.floor(Math.random() * (100-2) ) + 2;
+ctx.clearRect(0,0,1000,1000);
+
+if(circles[i].x+circles[i].radius<1000&&circles[i].y+circles[i].radius<1000)
+  {
+ circles[i].x=circles[i].x+dx; 
+circles[i].y=circles[i].y+dy;
+}
+
+else
+{
+dy=-dy;
+dx=-dx;
+circles[i].x=circles[i].x+dx; 
+circles[i].y=circles[i].y+dy;
+
+
+}
+
+
+circles.forEach(circle => {
+  ctx.beginPath();
+  ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
+  ctx.fillStyle = circle.color;
+  ctx.fill();
+
+});
+
+}
+
+//window.requestAnimationFrame(move);
+
+}
+//window.requestAnimationFrame(move);
+setInterval(move,10000);
+
+
+ function getMousePosition(canvas, event) { 
+            let rect = canvas.getBoundingClientRect(); 
+            let x = event.clientX;// - rect.left; 
+            let y = event.clientY ;//- rect.top; 
+
+            let xmod=x;//canvas is 62 units from the left screen
+            let ymod=y-8;//canvas is 8 units from the top screen
+           // console.log("Coordinate x: " + xrect,  
+             //    "Coordinate y: " + yrect); 
+
+            isIntersect(xmod,ymod);
+
+        } 
+      
+        let canvasElem = document.querySelector("canvas"); 
+          
+        canvasElem.addEventListener("mousedown", function(e) 
+        { 
+            getMousePosition(canvasElem, e); 
+        }); 
+
+</script>
+</body>
+</html>
