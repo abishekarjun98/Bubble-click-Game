@@ -21,7 +21,7 @@
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-var totalbubbles=3;
+var totalbubbles=8;
 
 arr=[];
     arr=["blue","red","yellow","green","brown","orange"];
@@ -31,26 +31,90 @@ var circles = [];
 
 ctx.globalAlpha = 1;
 
-for(var i=1;i<=totalbubbles;i++)
+
+
+function finddist(x1,x2,y1,y2)
 {
-  var r = Math.floor(Math.random() * (6) ) ;
-	var r1 = Math.floor(Math.random() * (15-2) ) + 2;
-  var r2 = Math.floor(Math.random() * (15-2) ) + 2;
-  var r3 = Math.floor(Math.random() * (15-2) ) + 2;
-let x1=r1*50;
-let y1=r2*50;
-let r4=r3*5;
-let col=arr[r];
-	circles.push({id:i,x:x1 ,y:y1 ,radius:r4,color:col});
+  const xdist=x1-x2;
+  const ydist=y1-y2;
+
+  return Math.sqrt(Math.pow(xdist,2)-Math.pow(ydist,2));
+}
+
+
+
+function randomIntFromRange(min,max)
+{
+
+  return Math.floor(Math.random()*(max -min +1)+ min);
+}
+
+
+createcircles();
+
+function createcircles()
+{
+
+for(var i=0;i< totalbubbles;i++)
+{
+
+let col="blue";
+//var radi=80;
+
+if(i!=0)
+{
+  for (var j=0 ; j< circles.length - 1; j++ ) 
+  {
+    
+    var xnew=randomIntFromRange(radi,canvas.width-radi);
+     var ynew=randomIntFromRange(radi,canvas.height-radi);
+
+     var radi= Math.floor(Math.random()*(80 - 70 )+ 70);
+
+  if(finddist(xnew,circles[j].x,ynew,circles[j].y) <  radi +circles[j].radius )
+  {
+  
+  //console.log(finddist(xnew,circles[j].x,ynew,circles[j].y)+"radius   "  + 2*radi)
+var xnew=randomIntFromRange(radi,canvas.width-radi);
+     var ynew=randomIntFromRange(radi,canvas.height-radi);
+     var radi= Math.floor(Math.random()*(80 - 70 )+ 70);
+j=-1;
+
+     }
+
+   
+    }
+}
+
+ circles.push({id:i,x:xnew ,y:ynew ,radius: radi ,color:col});
 
 }
+ makecircle();
+
+}
+
+//setInterval(createcircles,1000);
+
+
+function createrock()
+{
+  
+}
+
+
+function makecircle()
+{
 
 circles.forEach(circle => {
   ctx.beginPath();
   ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
-  ctx.fillStyle = circle.color;
-  ctx.fill();
+  //ctx.fillStyle = circle.color;
+  ctx.strokeStyle= circle.color;
+  ctx.stroke();
+  ctx.closePath();
+  //ctx.fill();
 });
+}
 
 
 function isIntersect(x1,y1)
@@ -65,21 +129,18 @@ for(var i=0; i<circles.length ;i++)
   var d= xa*xa + ya*ya;
   var dist=Math.sqrt(d);
 
+
+//console.log(circles[i].radius+"radius",+dist+"distance"+circles[i].x+"x"+circles[i].y+"y");
       if(dist < circles[i].radius)
   {
     
     console.log("clicked on bubble");
-    
-    /*ctx.beginPath()
-    ctx.arc(circles[i].x,circles[i].y,circles[i].radius,0,Math.PI*2,true);
-    ctx.fillStyle="grey";
-   ctx.fill();*/
-   circles.splice(i,1);
-  //console.log(circles.length); 
-  }
 
-//console.log(circles.length); 
+   circles.splice(i,1);
+  
+  }
 }
+
 }
 
 
@@ -89,10 +150,15 @@ function move()
 
 for (var i = 0; i <circles.length; i++) {
 //var dy=10;
+//var dx= Math.floor(Math.random() * (100-2) ) + 2;
+  //var dy= Math.floor(Math.random() * (100-2) ) + 2;
 
-var dx= Math.floor(Math.random() * (100-2) ) + 2;
-  var dy= Math.floor(Math.random() * (100-2) ) + 2;
+var dx= Math.round(Math.random()) * 3 - 1;
+var dy= Math.round(Math.random()) * 3 - 1;
+
 ctx.clearRect(0,0,1000,1000);
+
+
 
 if(circles[i].x+circles[i].radius<1000&&circles[i].y+circles[i].radius<1000)
   {
@@ -107,7 +173,6 @@ dx=-dx;
 circles[i].x=circles[i].x+dx; 
 circles[i].y=circles[i].y+dy;
 
-
 }
 
 
@@ -116,6 +181,9 @@ circles.forEach(circle => {
   ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI, false);
   ctx.fillStyle = circle.color;
   ctx.fill();
+    ctx.strokeStyle= circle.color;
+  ctx.stroke();
+  ctx.closePath();
 
 });
 
@@ -124,19 +192,18 @@ circles.forEach(circle => {
 //window.requestAnimationFrame(move);
 
 }
-//window.requestAnimationFrame(move);
-setInterval(move,10000);
+
 
 
  function getMousePosition(canvas, event) { 
-            let rect = canvas.getBoundingClientRect(); 
+            //let rect = canvas.getBoundingClientRect(); 
             let x = event.clientX;// - rect.left; 
             let y = event.clientY ;//- rect.top; 
 
-            let xmod=x;//canvas is 62 units from the left screen
-            let ymod=y-8;//canvas is 8 units from the top screen
-           // console.log("Coordinate x: " + xrect,  
-             //    "Coordinate y: " + yrect); 
+            let xmod=x-8;//canvas is 62 units from the left screen
+            let ymod=y-9;//canvas is 8 units from the top screen
+            console.log("Coordinate x: " + xmod,  
+                 "Coordinate y: " + ymod); 
 
             isIntersect(xmod,ymod);
 
