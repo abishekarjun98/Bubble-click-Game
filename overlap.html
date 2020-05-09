@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+      
+    <style>
+        
+        canvas { 
+        background: #eee;
+       
+     
+        }
+    </style>
+
+   
+</head>
+<body>
+
+
+
+<canvas id="canvas" width="1000" height=1000></canvas>
+
+<script>
+
+	//createcircle();
+circles=[];
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+
+function finddist(x1,x2,y1,y2)
+{
+  const xdist=x1-x2;
+  const ydist=y1-y2;
+
+  return Math.sqrt(Math.pow(xdist,2)-Math.pow(ydist,2));
+}
+
+
+
+function randomIntFromRange(min,max)
+{
+
+  return Math.floor(Math.random()*(max -min +1)+ min);
+}
+
+
+
+var overlapping=false;
+while (circles.length<5)
+{
+  var circle={
+    x:randomIntFromRange(50,canvas.width),
+    y:randomIntFromRange(50,canvas.height),
+    r:50
+  };
+
+var overlapping =false;
+  for (var j = 0; j < circles.length; j++) {
+    
+    var other =circles[j];
+    var d= finddist(circle.x,other.x,circle.y,other.y);
+
+    if(d <= 2*circle.r)
+    {
+    	console.log("d "+d);
+    	console.log("r1   "+circle.r);
+    	console.log("r2  "+other.r);
+
+      overlapping=true;
+      console.log("hrl");
+      break;
+    }
+  }
+
+  if(!overlapping)
+
+{
+
+  circles.push(circle);
+
+}
+
+}
+makecircle();
+
+/*if(circles.length==5)
+{
+	makecircle();
+}
+*/
+
+function makecircle()
+{
+
+circles.forEach(circle => {
+  ctx.beginPath();
+  ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI, false);
+  ctx.strokeStyle= "blue";
+  ctx.stroke();
+  ctx.closePath();
+
+});
+}
+
+</script>
+
+</body>
+</html>
