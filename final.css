@@ -1,0 +1,32 @@
+
+      body{
+        background-color: #ff6600;
+        font-family: 'Balsamiq Sans', cursive;
+      }
+        #canvas{
+          
+          background: #eee;
+          display: inline-block;
+        }
+    
+        #score{
+          
+          margin-bottom: 10px;
+        }
+        #timer{
+         
+         margin-bottom: 10px;
+        }
+        #countdowntimer
+        {
+         margin-bottom: 10px;
+
+        }
+        #btngrp{
+          
+          margin-bottom: 10px;
+        }
+        .everything{
+
+        
+        }
