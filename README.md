@@ -1,7 +1,2 @@
 # Bubble-click-Game
-opempage-> opening page of the game,
-indexgauntlet-> the game page
-
-Features implemented:
-Rock Bubbles,
-Tried to implement the Gauntlet feature , but could not debug the error, so i have commented it out.
+simple Bubble Burst Game, where user should click on the randomly moving bubble to burst it
